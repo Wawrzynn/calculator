@@ -1,7 +1,7 @@
 const Display = ({ value }) => {
   return (
-    <div className="display">
-      <span>{value}</span>
+    <div className="h-40 flex flex-col">
+      <span className="text-white text-4xl">{value}</span>
     </div>
   );
 };
