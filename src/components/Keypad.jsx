@@ -3,7 +3,13 @@ import Button from "./Button.jsx";
 const Keypad = () => {
   return (
     <div className="grid grid-cols-4 gap-2">
-      <Button onClick={() => {}}>C</Button>
+      <Button
+        onClick={() => {
+          console.log("C");
+        }}
+      >
+        C
+      </Button>
       <Button onClick={() => {}}>+/-</Button>
       <Button onClick={() => {}}>%</Button>
       <Button onClick={() => {}}>/</Button>
