@@ -1,7 +1,7 @@
 const Button = ({ children, onClick, className }) => {
   return (
     <button
-      className={`text-white font-bold text-xl  p-8 bg-light-grey rounded-3xl border-2 border-white ${className}`}
+      className={`text-white text-2xl font-sans p-8 shadow-white shadow-sm rounded-3xl ${className} hover:bg-opacity-70 active:shadow-md`}
       onClick={onClick}
     >
       {children}
