@@ -3,10 +3,7 @@ import Keypad from "./Keypad.jsx";
 
 const Calculator = () => {
   return (
-    <div className="flex flex-col w-1/2 m-auto justify-center items-center bg-gradient-to-br from-gray-700 to-gray-950 rounded-2xl">
-      <h1 className="text-4xl text-white w-full flex items-start ml-10">
-        Calculator
-      </h1>
+    <div className="container m-auto mt-2 w-fit flex flex-col pb-10 pt-5 px-5 justify-center items-center bg-dark-blue rounded-3xl">
       <Display value="0" />
       <Keypad />
     </div>
