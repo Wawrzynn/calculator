@@ -1,6 +1,6 @@
 # Calculator react &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/Wawrzynn/calculator/blob/main/LICENSE)
 
-Calculator application created using React, Vite and Jest. It allows user to compute simple mathematial operations.
+Calculator application created using React, TailwindCSS and Jest. It allows user to compute simple mathematial operations.
 
 ## Installing / Getting started
 ```shell
@@ -13,7 +13,7 @@ These two lines of code install all required dependencies using npm and than the
 ## Developing
 
 ### Built With
-Project is build with React, Vite and Jest.
+Project is build with React, Vite, TailwindCSS and Jest.
 
 ### Prerequisites
 To run the project LTS version of [node](https://nodejs.org/en) is required.
