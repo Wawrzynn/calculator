@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Button from "./Button.jsx";
 
@@ -6,6 +6,44 @@ const Keypad = ({ setDisplayValue }) => {
   const [operator, setOperator] = useState(null);
   const [firstValue, setFirstValue] = useState(null);
   const [secondValue, setSecondValue] = useState(null);
+  const [result, setResult] = useState(null);
+
+  useEffect(() => {
+    if (firstValue !== null && secondValue !== null && operator !== null) {
+      switch (operator) {
+        case "+":
+          setResult(
+            parseFloat(
+              (parseFloat(firstValue) + parseFloat(secondValue)).toFixed(6),
+            ),
+          );
+          break;
+        case "-":
+          setResult(
+            parseFloat(
+              (parseFloat(firstValue) - parseFloat(secondValue)).toFixed(6),
+            ),
+          );
+          break;
+        case "*":
+          setResult(
+            parseFloat(
+              (parseFloat(firstValue) * parseFloat(secondValue)).toFixed(6),
+            ),
+          );
+          break;
+        case "÷":
+          setResult(
+            parseFloat(
+              (parseFloat(firstValue) / parseFloat(secondValue)).toFixed(6),
+            ),
+          );
+          break;
+        default:
+          break;
+      }
+    }
+  }, [firstValue, secondValue, operator]);
 
   const handleNumberClick = (number) => {
     if (operator === null) {
@@ -32,37 +70,21 @@ const Keypad = ({ setDisplayValue }) => {
       setFirstValue("0");
     }
     if (secondValue !== null) {
+      handleEqualsClick();
+      setOperator(operator);
+      setDisplayValue(`${result || "0"} ${operator}`);
+    } else {
+      setOperator(operator);
+      setDisplayValue(`${firstValue || "0"} ${operator}`);
     }
-    setOperator(operator);
-    setDisplayValue(`${firstValue || "0"} ${operator}`);
   };
 
   const handleEqualsClick = () => {
-    let result = 0;
-    if (operator === "+") {
-      result = parseInt(firstValue) + parseInt(secondValue);
-      setDisplayValue(result);
+    if (firstValue !== null && secondValue !== null && operator !== null) {
       setFirstValue(result);
       setSecondValue(null);
       setOperator(null);
-    } else if (operator === "-") {
-      result = parseInt(firstValue) - parseInt(secondValue);
       setDisplayValue(result);
-      setFirstValue(result);
-      setSecondValue(null);
-      setOperator(null);
-    } else if (operator === "*") {
-      result = parseInt(firstValue) * parseInt(secondValue);
-      setDisplayValue(result);
-      setFirstValue(result);
-      setSecondValue(null);
-      setOperator(null);
-    } else if (operator === "÷") {
-      result = parseInt(firstValue) / parseInt(secondValue);
-      setDisplayValue(result);
-      setFirstValue(result);
-      setSecondValue(null);
-      setOperator(null);
     }
   };
 
@@ -73,13 +95,80 @@ const Keypad = ({ setDisplayValue }) => {
     setSecondValue(null);
   };
 
-  const handlePlusMinusClick = () => {};
+  const handlePlusMinusClick = () => {
+    if (firstValue !== null && secondValue === null && operator === null) {
+      setFirstValue(firstValue * -1);
+      setDisplayValue(firstValue * -1);
+    } else if (
+      firstValue !== null &&
+      secondValue === null &&
+      operator !== null
+    ) {
+      setFirstValue(firstValue * -1);
+      setDisplayValue(`${firstValue * -1} ${operator}`);
+    } else if (secondValue !== null && secondValue !== "0") {
+      setSecondValue(secondValue * -1);
+      setDisplayValue(`${firstValue} ${operator} ${secondValue * -1}`);
+    }
+  };
 
-  const handlePercentageClick = () => {};
+  const handlePercentageClick = () => {
+    if (firstValue !== null && secondValue === null && operator === null) {
+      setFirstValue(firstValue / 100);
+      setDisplayValue(firstValue / 100);
+    } else if (
+      firstValue !== null &&
+      secondValue === null &&
+      operator !== null
+    ) {
+      setFirstValue(firstValue / 100);
+      setDisplayValue(`${firstValue / 100} ${operator}`);
+    } else if (secondValue !== null) {
+      setSecondValue(secondValue / 100);
+      setDisplayValue(`${firstValue} ${operator} ${secondValue / 100}`);
+    }
+  };
 
-  const handleDotClick = () => {};
+  const handleDotClick = () => {
+    if (firstValue === null) {
+      setFirstValue("0.");
+      setDisplayValue("0.");
+    } else if (
+      secondValue === null &&
+      operator === null &&
+      !firstValue.includes(".")
+    ) {
+      setFirstValue(firstValue + ".");
+      setDisplayValue(firstValue + ".");
+    } else if (
+      secondValue === null &&
+      operator !== null &&
+      !firstValue.includes(".")
+    ) {
+      setFirstValue(firstValue + ".");
+      setDisplayValue(`${firstValue + "."} ${operator}`);
+    } else if (secondValue !== null && !secondValue.includes(".")) {
+      setSecondValue(secondValue + ".");
+      setDisplayValue(`${firstValue} ${operator} ${secondValue + "."}`);
+    }
+  };
 
-  const handleZeroClick = () => {};
+  const handleZeroClick = () => {
+    if (firstValue !== null && secondValue === null && operator === null) {
+      setFirstValue(firstValue + "0");
+      setDisplayValue(firstValue + "0");
+    } else if (
+      firstValue !== null &&
+      secondValue === null &&
+      operator !== null
+    ) {
+      setSecondValue("0");
+      setDisplayValue(`${firstValue} ${operator} 0`);
+    } else if (secondValue !== null && secondValue !== "0") {
+      setSecondValue(secondValue + "0");
+      setDisplayValue(`${firstValue} ${operator} ${secondValue + "0"}`);
+    }
+  };
 
   return (
     <div className="grid grid-cols-4 gap-2">
@@ -91,10 +180,20 @@ const Keypad = ({ setDisplayValue }) => {
       >
         C
       </Button>
-      <Button className="bg-blue" onClick={() => {}}>
+      <Button
+        className="bg-blue"
+        onClick={() => {
+          handlePlusMinusClick();
+        }}
+      >
         + / -
       </Button>
-      <Button className="bg-blue" onClick={() => {}}>
+      <Button
+        className="bg-blue"
+        onClick={() => {
+          handlePercentageClick();
+        }}
+      >
         %
       </Button>
       <Button
@@ -201,10 +300,20 @@ const Keypad = ({ setDisplayValue }) => {
       >
         +
       </Button>
-      <Button className="col-span-2 bg-light-grey" onClick={() => {}}>
+      <Button
+        className="col-span-2 bg-light-grey"
+        onClick={() => {
+          handleZeroClick();
+        }}
+      >
         0
       </Button>
-      <Button className="bg-light-grey" onClick={() => {}}>
+      <Button
+        className="bg-light-grey"
+        onClick={() => {
+          handleDotClick();
+        }}
+      >
         .
       </Button>
       <Button
